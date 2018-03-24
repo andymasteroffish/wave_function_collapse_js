@@ -5,7 +5,10 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+  <script language="javascript" type="text/javascript" src="wfc/PotentialTile.js"></script>
   <script language="javascript" type="text/javascript" src="wfc/ImageInfo.js"></script>
+  <script language="javascript" type="text/javascript" src="wfc/CheckPoint.js"></script>
+  <script language="javascript" type="text/javascript" src="wfc/WFC_Tile.js"></script>
   <script language="javascript" type="text/javascript" src="wfc/WFC.js"></script>
   <script language="javascript" type="text/javascript" src="main.js"></script>
 
@@ -13,11 +16,19 @@
 
 
 <body onload="init();"> 
+  
   <div class="canvas">
-    <canvas id="canvas" width="448" height="256"></canvas>
+    <canvas id="source_canvas" width="448" height="256"></canvas>
   </div>
 
-  <input id="clickMe" type="button" value="clickme" onclick="testo();" />
+  <br>
+  <br>
+
+  <div class="canvas">
+    <canvas id="output_canvas" width="448" height="256"></canvas>
+  </div>
+
+  
 </body> 
 
 </html>

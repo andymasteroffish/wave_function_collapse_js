@@ -1,7 +1,13 @@
 var wfc;
 
+var frameInterval;
+
 function init(){
 	wfc = new WFC();
+
+	document.addEventListener("keydown", keyDownRegister, false);
+	document.addEventListener("keyup", keyUpRegister, false);
+
 }
 
 
@@ -12,7 +18,7 @@ function noteTileImageLoaded(){
 
 	var allLoaded = true;
 	for (var i=0; i<wfc.tileImages.length; i++){
-		if (wfc.tileImages[i].image.width != wfc.tileSize || !wfc.tileImages[i].image.complete){
+		if (wfc.tileImages[i].image.width != wfc.tileW || !wfc.tileImages[i].image.complete){
 			console.log(i+" fucked it up");
 			allLoaded = false;
 		}
@@ -23,13 +29,49 @@ function noteTileImageLoaded(){
 	if (allLoaded){
 		wfc.setupComplete = true;
 		wfc.start();
+
+		frameInterval = setInterval(tick, 10); 
 	}
-	
-	
 }
 
+
+function keyDownRegister(e) {
+	var keyCode = e.keyCode;
+	wfc.keyPress(keyCode);
+}
+function keyUpRegister(e) {
+	var keyCode = e.keyCode;
+	wfc.keyRelease(keyCode);
+}
+
+
+function tick() {
+	wfc.update();
+}
 
 
 function testo(){
 	console.log("crenshaw");
+}
+
+
+
+
+
+function randomRange(max){
+	return randomRange(0, max);
+}
+
+function randomRange(min, max){
+	var range = max-min;
+	return Math.random()*range + min;
+}
+
+function randomInt(max){
+	//console.log("max "+max);
+	return randomIntWithMin(0, max);
+}
+function randomIntWithMin(min, max){
+	//console.log("min "+min+"  max "+max);
+	return Math.floor(randomRange(min,max));
 }
