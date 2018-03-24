@@ -1,0 +1,18 @@
+body {padding: 0; margin: 0;  background-color: #000000; color: #ffffff} 
+
+p {
+    display: block;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#base{
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+.trainer_select{
+	margin-left: 20px;
+}
