@@ -29,7 +29,7 @@ function CheckPoint(_prevMove){
 	this.setup = function(_prevMove){
 		this.prevPoint = _prevMove;
 		if (this.prevPoint != null){
-			this.prevPoint.nextPovar = this;
+			this.prevPoint.nextPoint = this;
 		}
 
 		this.nextPoint = null;
@@ -37,7 +37,7 @@ function CheckPoint(_prevMove){
 	}
 
 	this.move = function(col, row, idChar){
-		console.log("luv to move "+idChar);
+		//console.log("luv to move "+idChar);
 		this.thisMove.set(col,row,idChar);
 	}
 

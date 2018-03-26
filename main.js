@@ -19,7 +19,7 @@ function noteTileImageLoaded(){
 	var allLoaded = true;
 	for (var i=0; i<wfc.tileImages.length; i++){
 		if (wfc.tileImages[i].image.width != wfc.tileW || !wfc.tileImages[i].image.complete){
-			console.log(i+" fucked it up");
+			//console.log(i+" fucked it up");
 			allLoaded = false;
 		}
 	}
@@ -30,7 +30,7 @@ function noteTileImageLoaded(){
 		wfc.setupComplete = true;
 		wfc.start();
 
-		frameInterval = setInterval(tick, 10); 
+		frameInterval = setInterval(tick, 5); 
 	}
 }
 
@@ -58,9 +58,10 @@ function testo(){
 
 
 
-function randomRange(max){
-	return randomRange(0, max);
-}
+// function randomRange(max){
+// 	console.log("max "+max);
+// 	return randomRange(0, max);
+// }
 
 function randomRange(min, max){
 	var range = max-min;

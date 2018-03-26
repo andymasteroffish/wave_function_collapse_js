@@ -5,7 +5,7 @@ function WFC(){
 
 	this.autoPlay = false;
 	this.fastForward = false;
-	this.useFreq = false;
+	this.useFreq = true;
 	this.freqWeight = 1.0;
 	
 	this.levelSourceYFirst = [
@@ -43,9 +43,9 @@ function WFC(){
 	this.outputRows = 16;
 	this.outputImage = new Array(this.outputCols);
 
-	//checkpovaring in order ot undo moves
-	var rootMove;
-	var curMove;
+	//checkpointing in order ot undo moves
+	this.rootMove;
+	this.curMove;
 
 	//states
 	this.setupComplete = false;
@@ -262,31 +262,34 @@ function WFC(){
 	    var thisChoice = randomInt(choices.length);
 	    
 	    //select a tile at random
-	    var thisTile = -1;
+	    var thisTileIDChar = '?';
 	    if (!this.useFreq){
-	        thisTile = randomInt(choices[thisChoice].potentialIDs.length);
+	    	var idNum = randomInt(choices[thisChoice].potentialIDs.length);
+	        thisTileIDChar = choices[thisChoice].potentialIDs[ idNum ];
 	    }
 	    //get the frequency of each type of tile for each direction
 	    else{
 	        var tileChoices = this.getTileChoicesWithFreq( choices[thisChoice].x, choices[thisChoice].y );
+	        
 	        var totalFreq = 0;
 	        for (var i=0; i<tileChoices.length; i++){
-	            totalFreq += tileChoices[i].freq;
+	        	totalFreq += tileChoices[i].freq;
 	        }
-	        var roll = randomRange(totalFreq);
+	        var roll = randomRange(0,totalFreq);
 	        
 	        for (var i=0; i<tileChoices.length; i++){
 	            roll -= tileChoices[i].freq;
 	            if (roll <= 0){
-	                thisTile = i;
+	                //thisTile = i;
+	                thisTileIDChar = tileChoices[i].idChar;
 	                break;
 	            }
 	        }
 	    }
 	    
 	    //make a move
-	    console.log("this id number "+thisTile);
-	    this.curMove.move( choices[thisChoice].x, choices[thisChoice].y, choices[thisChoice].potentialIDs[thisTile]);
+	    //console.log("this id number "+thisTile);
+	    this.curMove.move( choices[thisChoice].x, choices[thisChoice].y, thisTileIDChar);
 	    
 	}
 
@@ -354,7 +357,7 @@ function WFC(){
 	        return;
 	    }
 	    
-	    console.log("update board point:"+point);
+	    //console.log("update board point:"+point);
 
 	    var move = point.thisMove;
 	    if (move.col == -1){
@@ -362,7 +365,7 @@ function WFC(){
 	        return;
 	    }
 
-	    console.log("this move "+move.col+","+move.row+" : "+move.idChar);
+	    //console.log("this move "+move.col+","+move.row+" : "+move.idChar);
 	    
 	    //set the given tiles
 	    this.outputImage[move.col][move.row].set(move.idChar);
@@ -377,7 +380,7 @@ function WFC(){
 	    //go through the neighbors and update them
 	    
 	    var thisTile = this.getSourceTileFromID(move.idChar);// this.sourceTiles[this.outputImage[move.col][move.row].setID];
-	    console.log("this tile "+thisTile);
+	    //console.log("this tile "+thisTile);
 	    //north
 	    if (move.row > 0){
 	        this.outputImage[move.col][move.row-1].ruleOutBasedOnNeighbor( thisTile, 0);
@@ -420,14 +423,14 @@ function WFC(){
 	    if (!boardIsValid){
 	        //autoPlay = false;
 	        this.curMove.prevPoint.ruleOutMove(this.curMove.thisMove);
-	        this.revertToCheckPovar(this.curMove.prevPoint);
+	        this.revertToCheckPoint(this.curMove.prevPoint);
 	    }
 	}
 
 
 
 	//--------------------------------------------------------------
-	this.revertToCheckPovar = function(point){
+	this.revertToCheckPoint = function(point){
 	    console.log("REVERT to "+point.getDepth());
 	    this.resetOutput();
 	    
@@ -436,12 +439,11 @@ function WFC(){
 	    }
 	    
 	    this.curMove = this.rootMove;
-	    //var steps =0;
 	    while(this.curMove != point){
-	        //steps++;
-	        //cout<<"step: "<<steps<<endl;
+	        //console.log("step: "+this.curMove.getDepth());
 	        this.updateBoardFromMove(this.curMove);
-	        this.curMove = curMove.nextPoint;
+	        //console.log("next: "+this.curMove.nextPoint);
+	        this.curMove = this.curMove.nextPoint;
 	    }
 	    
 	    this.updateBoardFromMove(this.curMove);
@@ -454,17 +456,17 @@ function WFC(){
 	this.keyPress = function(keyCode){
 
 		var key = String.fromCharCode(keyCode);
-		console.log(keyCode+" i "+key);
+		//console.log(keyCode+" : "+key);
 		
 		if (key == ' '){
 	        this.advance();
 	        this.updateBoardFromMove(this.curMove);
 	    }
 	    
-	    // if (key == 'z'){
-	    //     curMove->prevPovar->ruleOutMove(curMove->thisMove);
-	    //     revertToCheckPovar(curMove->prevPovar);
-	    // }
+	    if (key == 'Z'){
+	        this.curMove.prevPoint.ruleOutMove(this.curMove.thisMove);
+	        this.revertToCheckPoint(this.curMove.prevPoint);
+	    }
 	    
 	    if (key == 'A'){
 	        this.autoPlay = !this.autoPlay;
