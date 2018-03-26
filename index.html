@@ -1,10 +1,11 @@
 <html>
 <head>
-  <title>Combat Genetics by Andy Wallace</title>
+  <title>Wave Function Collapse Lode Runner</title>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+  <script language="javascript" type="text/javascript" src="wfc/GridPos.js"></script>
   <script language="javascript" type="text/javascript" src="wfc/PotentialTile.js"></script>
   <script language="javascript" type="text/javascript" src="wfc/ImageInfo.js"></script>
   <script language="javascript" type="text/javascript" src="wfc/CheckPoint.js"></script>
@@ -17,6 +18,22 @@
 
 <body onload="init();"> 
   
+  <div class="buttons">
+    <button class="pen_button_off" id="button_0" onclick="clickedPenButton(0)"><img src="tile_pics/blank.png"></button>
+    <button class="pen_button_off" id="button_1" onclick="clickedPenButton(1)"><img src="tile_pics/block.png"></button>
+    <button class="pen_button_ff" id="button_2" onclick="clickedPenButton(2)"><img src="tile_pics/brick.png"></button>
+    <button class="pen_button_off" id="button_3" onclick="clickedPenButton(3)"><img src="tile_pics/escape_ladder.png"></button>
+    <button class="pen_button_off" id="button_4" onclick="clickedPenButton(4)"><img src="tile_pics/foe.png"></button>
+    <button class="pen_button_off" id="button_5" onclick="clickedPenButton(5)"><img src="tile_pics/gold.png"></button>
+    <button class="pen_button_off" id="button_6" onclick="clickedPenButton(6)"><img src="tile_pics/ladder.png"></button>
+    <button class="pen_button_off" id="button_7" onclick="clickedPenButton(7)"><img src="tile_pics/player.png"></button>
+    <button class="pen_button_off" id="button_8" onclick="clickedPenButton(8)"><img src="tile_pics/rope.png"></button>
+
+    <input id="gold_slider" type="range" min="0" max="10" step="1" value="3" onchange="updateGoldSlider(this.value)">
+
+
+  </div>
+
   <div class="canvas">
     <canvas id="source_canvas" width="448" height="256"></canvas>
   </div>

@@ -1,6 +1,7 @@
 function WFC(){
 
 	this.sourceCanvas;
+	this.sourceCanvasHolder;
 	this.outputCanvas;
 
 	this.autoPlay = false;
@@ -53,10 +54,41 @@ function WFC(){
 	this.needToGetNeighborInfo;
 	this.isDone;
 
+	//seeding
+	this.numGoldSeeds = 3;
+	this.seedEscapeLadder = true;
+
+	//drawing onto source
+	this.curPenChar = '?'
+	this.mouseIsDown = false;
+
 
 	this.setup = function(){
-		this.sourceCanvas = document.getElementById("source_canvas").getContext("2d");
+		this.sourceCanvasHolder = document.getElementById("source_canvas");
+		this.sourceCanvas = this.sourceCanvasHolder.getContext("2d");
 		this.outputCanvas = document.getElementById("output_canvas").getContext("2d");
+
+		//some listeners
+		var context = this;
+		$(document).mousedown(function() {
+		    context.mouseIsDown = true;
+		}).mouseup(function() {
+		    context.mouseIsDown = false;  
+		});
+
+		$("#source_canvas").mousedown(function(e){
+			context.clickedSourceCanvas(e, context);
+		});
+
+		//faking drag events
+		$("#source_canvas").mousemove(function(e){
+			//console.log(e.pageX+","+e.pageY);
+			if (context.mouseIsDown){
+				context.clickedSourceCanvas(e, context);
+			}
+		});
+
+		
 
 		//load some pics
 		this.tileImages.push( new ImageInfo("tile_pics/blank.png", 	' ') );
@@ -104,6 +136,8 @@ function WFC(){
 	this.start = function(){
 		console.log("go go go");
 
+		this.setPen(2);
+
 		this.resetOutput();
     	this.needToGetNeighborInfo = true;
     	this.needFirstMove = true;
@@ -111,7 +145,6 @@ function WFC(){
     	//this.validateBoard(); 
     	//testing
     	this.advance();
-	    this.updateBoardFromMove(this.curMove);
 
     	this.draw();
 	}
@@ -137,17 +170,56 @@ function WFC(){
 	        }
 	    }
 	    this.isDone = false;
+
+	    
+	    //show the changes
+	    this.draw();
 	}
 
 	//--------------------------------------------------------------
 	this.doFirstMove = function(){
 	    console.log("do first move");
 	    this.needFirstMove = false;
-	    //start us off
+
+	    //restart the history
 	    this.rootMove.prune();
-	    this.curMove = new CheckPoint(this.rootMove);
-	    this.curMove.move(randomInt(this.outputCols), randomInt(this.outputRows), this.sourceTiles[randomInt(this.sourceTiles.length)].idChar) ;
+	    this.curMove = this.rootMove;
+
+
+	    //do some seeding
+
+	   	//escape ladder
+	   	if (this.seedEscapeLadder){
+	   		var pos = new GridPos( randomInt(this.outputCols), 0);
+	    	this.curMove = new CheckPoint(this.curMove);
+	    	this.curMove.move(pos.x, pos.y, 'S');
+	    	this.updateBoardFromMove(this.curMove);
+	   	}
+	    //gold
+	    for (var i=0; i<this.numGoldSeeds; i++){
+	    	var pos = this.getUnoccupiedPos();
+	    	this.curMove = new CheckPoint(this.curMove);
+	    	this.curMove.move(pos.x, pos.y, '$');
+	    	this.updateBoardFromMove(this.curMove);
+	    }
+
+	    //start us off
+	    var randPos = this.getUnoccupiedPos();
+	    this.curMove = new CheckPoint(this.curMove);
+	    this.curMove.move(randPos.x, randPos.y, this.sourceTiles[randomInt(this.sourceTiles.length)].idChar) ;
 	    this.updateBoardFromMove(this.curMove);
+	}
+
+	//--------------------------------------------------------------
+	//this will lock up if there are no unoccupied tiles, and will be slow if there are few
+	this.getUnoccupiedPos = function(){
+		while (true){
+			var col = randomInt(this.outputCols);
+	    	var row = randomInt(this.outputRows);
+	    	if (this.outputImage[col][row].state == PotentialTileState.STATE_INACTIVE){
+	    		return new GridPos(col, row);
+	    	}
+		}
 	}
 
 
@@ -290,6 +362,9 @@ function WFC(){
 	    //make a move
 	    //console.log("this id number "+thisTile);
 	    this.curMove.move( choices[thisChoice].x, choices[thisChoice].y, thisTileIDChar);
+
+	    //and do it
+	    this.updateBoardFromMove(this.curMove);
 	    
 	}
 
@@ -460,7 +535,6 @@ function WFC(){
 		
 		if (key == ' '){
 	        this.advance();
-	        this.updateBoardFromMove(this.curMove);
 	    }
 	    
 	    if (key == 'Z'){
@@ -479,6 +553,7 @@ function WFC(){
 	    if (key == 'R'){
 	        this.resetOutput();
 	        this.needFirstMove = true;
+	        this.advance();
 	    }
 	    
 	    //frequency
@@ -499,13 +574,49 @@ function WFC(){
 
 
 	//--------------------------------------------------------------
+	this.setPen = function(newVal){
+		this.curPenChar = this.sourceTiles[newVal].idChar;
+		
+		//set the class info
+		for (var i=0; i<this.sourceTiles.length; i++){
+
+			var idName = "#button_"+i;
+			var thisbutton = $(idName);
+			if (newVal == i){
+				thisbutton.addClass("pen_button_on").removeClass("pen_button_off");
+			}else{
+				thisbutton.addClass("pen_button_off").removeClass("pen_button_on");
+			}
+		}
+
+	}
+
+
+	//--------------------------------------------------------------
+	this.clickedSourceCanvas = function(e){
+		var clickX = e.pageX - this.sourceCanvasHolder.offsetLeft;
+		var clickY = e.pageY - this.sourceCanvasHolder.offsetTop;
+		
+		var col = Math.floor( clickX / this.tileW);
+		var row = Math.floor( clickY / this.tileH);
+
+		this.drawOnSourceImage(col, row, this.curPenChar);
+	}
+
+	
+
+	//--------------------------------------------------------------
 	this.drawOnSourceImage = function( x,  y, newID){
 	    this.sourceImage[x][y] = newID;
 	    this.needToGetNeighborInfo = true;
 	    if (!this.needFirstMove){
 	        this.resetOutput();
 	        this.needFirstMove = true;
+	        this.advance();
 	    }
+
+	    //console.log(x+","+y+" is now "+newID);
+	    this.draw();
 	}
 
 	//--------------------------------------------------------------
@@ -518,7 +629,6 @@ function WFC(){
 	        }
 	        for (var i=0; i<cycles; i++){
 	            this.advance();
-	            this.updateBoardFromMove(this.curMove);
 	        }
 	    }
 	}

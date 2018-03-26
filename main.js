@@ -49,6 +49,15 @@ function tick() {
 	wfc.update();
 }
 
+function clickedPenButton(newVal){
+	wfc.setPen(newVal);
+}
+
+function updateGoldSlider(val){
+	wfc.numGoldSeeds = val;
+	console.log("gold: "+wfc.numGoldSeeds);
+}
+
 
 function testo(){
 	console.log("crenshaw");

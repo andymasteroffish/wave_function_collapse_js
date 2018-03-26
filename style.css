@@ -8,11 +8,16 @@ p {
     margin-right: 0;
 }
 
-#base{
+
+.canvas{
 	margin-left: 5px;
 	margin-top: 5px;
 }
 
-.trainer_select{
-	margin-left: 20px;
+.pen_button_off{
+	background-color: #eeeeee;
+}
+
+.pen_button_on{
+	background-color: #666666;
 }
