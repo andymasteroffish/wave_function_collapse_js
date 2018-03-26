@@ -55,7 +55,7 @@ function WFC(){
 	this.isDone;
 
 	//seeding
-	this.numGoldSeeds = 3;
+	this.numGoldSeeds = 5;
 	this.seedEscapeLadder = true;
 
 	//drawing onto source
@@ -157,6 +157,12 @@ function WFC(){
 	    this.resetOutput();
 	}
 
+	this.resetOutputAndAdvance = function(){
+		this.resetOutput();
+	    this.needFirstMove = true;
+	    this.advance();
+	}
+
 	//--------------------------------------------------------------
 	this.resetOutput = function(){
 		var potentialIDs = new Array();
@@ -188,13 +194,20 @@ function WFC(){
 
 	    //do some seeding
 
-	   	//escape ladder
+	    //escape escape_ladder (best if on top)
 	   	if (this.seedEscapeLadder){
 	   		var pos = new GridPos( randomInt(this.outputCols), 0);
 	    	this.curMove = new CheckPoint(this.curMove);
 	    	this.curMove.move(pos.x, pos.y, 'S');
 	    	this.updateBoardFromMove(this.curMove);
 	   	}
+
+	   	//player
+	   	var playerPos = this.getUnoccupiedPos();
+    	this.curMove = new CheckPoint(this.curMove);
+    	this.curMove.move(playerPos.x, playerPos.y, '&');
+    	this.updateBoardFromMove(this.curMove);
+
 	    //gold
 	    for (var i=0; i<this.numGoldSeeds; i++){
 	    	var pos = this.getUnoccupiedPos();
@@ -551,9 +564,7 @@ function WFC(){
 	    
 	    
 	    if (key == 'R'){
-	        this.resetOutput();
-	        this.needFirstMove = true;
-	        this.advance();
+	        this.resetOutputAndAdvance();
 	    }
 	    
 	    //frequency
@@ -610,9 +621,7 @@ function WFC(){
 	    this.sourceImage[x][y] = newID;
 	    this.needToGetNeighborInfo = true;
 	    if (!this.needFirstMove){
-	        this.resetOutput();
-	        this.needFirstMove = true;
-	        this.advance();
+	        this.resetOutputAndAdvance();
 	    }
 
 	    //console.log(x+","+y+" is now "+newID);

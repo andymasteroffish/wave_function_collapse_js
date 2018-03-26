@@ -1,7 +1,7 @@
-body {padding: 0; margin: 0;  background-color: #8888ee; color: #ffffff} 
+body {padding: 0; margin: 0;  background-color: #8888ee; color: #000000} 
 
 p {
-    display: block;
+    display: inline;
     margin-top: 0em;
     margin-bottom: 0em;
     margin-left: 0;

@@ -8,6 +8,16 @@ function init(){
 	document.addEventListener("keydown", keyDownRegister, false);
 	document.addEventListener("keyup", keyUpRegister, false);
 
+
+	var gold_slider = document.getElementById("gold_slider");
+	gold_slider.value = wfc.numGoldSeeds;
+	document.getElementById("gold_slider_text").innerHTML = "min num Gold: "+wfc.numGoldSeeds;
+	gold_slider.oninput = function() {
+		wfc.numGoldSeeds = this.value;
+		document.getElementById("gold_slider_text").innerHTML = "min num Gold: "+wfc.numGoldSeeds;
+		wfc.resetOutputAndAdvance();
+	}
+
 }
 
 
@@ -51,11 +61,6 @@ function tick() {
 
 function clickedPenButton(newVal){
 	wfc.setPen(newVal);
-}
-
-function updateGoldSlider(val){
-	wfc.numGoldSeeds = val;
-	console.log("gold: "+wfc.numGoldSeeds);
 }
 
 
