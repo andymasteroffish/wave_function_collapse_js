@@ -216,11 +216,23 @@ function WFC(){
 	    	this.updateBoardFromMove(this.curMove);
 	    }
 
+
+	    //add no more player spawn points
+	    for (var x=0; x<this.outputCols; x++){
+	        for (var y=0; y<this.outputRows; y++){
+
+	        	this.outputImage[x][y].ruleOutID('&');
+
+	        }
+	    } 
+
+
+
 	    //start us off
-	    var randPos = this.getUnoccupiedPos();
-	    this.curMove = new CheckPoint(this.curMove);
-	    this.curMove.move(randPos.x, randPos.y, this.sourceTiles[randomInt(this.sourceTiles.length)].idChar) ;
-	    this.updateBoardFromMove(this.curMove);
+	    // var randPos = this.getUnoccupiedPos();
+	    // this.curMove = new CheckPoint(this.curMove);
+	    // this.curMove.move(randPos.x, randPos.y, this.sourceTiles[randomInt(this.sourceTiles.length)].idChar) ;
+	    // this.updateBoardFromMove(this.curMove);
 	}
 
 	//--------------------------------------------------------------
