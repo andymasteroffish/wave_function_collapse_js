@@ -583,6 +583,12 @@ function WFC(){
 	    if (key == 'Q'){
 	        this.useFreq = !this.useFreq;
 	    }
+
+	    //playing
+	    if (key == 'P'){
+	    	this.startGame();
+	    }
+
 	    // if (key == '-' && this.freqWeight > 0){
 	    //     this.freqWeight -= 0.1;
 	    // }
@@ -655,6 +661,29 @@ function WFC(){
 	}
 
 
+	//--------------------------------------------------------------
+	this.startGame = function(){
+		LoderRunnerInit();
+	}
+
+	//--------------------------------------------------------------
+	this.getMap = function(){
+		console.log("get my map");
+
+		var mapText = "";
+
+		for (var y=0; y<this.outputRows; y++){
+			for (var x=0; x<this.outputCols; x++){
+				mapText += this.outputImage[x][y].setID;
+			}
+		}
+
+		console.log(mapText);
+
+
+		return mapText;
+		
+	}
 
 	//DRAWING
 

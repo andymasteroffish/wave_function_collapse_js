@@ -15,31 +15,31 @@
 
 
   <!-- from https://github.com/SimonHung/LodeRunner -->
-  <script type="text/javascript" src="LodeRunner/./lib/preloadjs-0.6.0.min.js"></script>
-  <script type="text/javascript" src="LodeRunner/./lib/soundjs-0.6.0.min.js"></script>
-  <script type="text/javascript" src="LodeRunner/./lib/tweenjs-0.6.0.min.js"></script>
-  <script type="text/javascript" src="LodeRunner/./lib/easeljs-0.7.1.min.js"></script>
+  <script type="text/javascript" src="./lib/preloadjs-0.6.0.min.js"></script>
+  <script type="text/javascript" src="./lib/soundjs-0.6.0.min.js"></script>
+  <script type="text/javascript" src="./lib/tweenjs-0.6.0.min.js"></script>
+  <script type="text/javascript" src="./lib/easeljs-0.7.1.min.js"></script>
 
-  <script type="text/javascript" src="LodeRunner/lodeRunner.baseLevel.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.champLevel.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.storage.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.def.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.key.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.misc.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.hiscore.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.menu.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.runner.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.guard.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.demo.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.demoData1.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.edit.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.preload.js"></script>
-  <script type="text/javascript" src="LodeRunner/lodeRunner.main.js"></script>
+  <script type="text/javascript" src="lodeRunner.baseLevel.js"></script>
+  <script type="text/javascript" src="lodeRunner.champLevel.js"></script>
+  <script type="text/javascript" src="lodeRunner.storage.js"></script>
+  <script type="text/javascript" src="lodeRunner.def.js"></script>
+  <script type="text/javascript" src="lodeRunner.key.js"></script>
+  <script type="text/javascript" src="lodeRunner.misc.js"></script>
+  <script type="text/javascript" src="lodeRunner.hiscore.js"></script>
+  <script type="text/javascript" src="lodeRunner.menu.js"></script>
+  <script type="text/javascript" src="lodeRunner.runner.js"></script>
+  <script type="text/javascript" src="lodeRunner.guard.js"></script>
+  <script type="text/javascript" src="lodeRunner.demo.js"></script>
+  <script type="text/javascript" src="lodeRunner.demoData1.js"></script>
+  <script type="text/javascript" src="lodeRunner.edit.js"></script>
+  <script type="text/javascript" src="lodeRunner.preload.js"></script>
+  <script type="text/javascript" src="lodeRunner.main.js"></script>
 
 </head>
 
 
-<body onload="init();"> 
+<body onload="init_andy();"> 
   
   <div class="buttons">
     <button class="pen_button_off" id="button_0" onclick="clickedPenButton(0)"><img src="tile_pics/blank.png"></button>
@@ -69,8 +69,9 @@
     <canvas id="output_canvas" width="448" height="256"></canvas>
   </div>
 
+  <!-- load runner -->
   <div class="canvas">
-    <canvas id="canvas" width="960" height="400"></canvas>
+    <canvas id="canvas" width="560" height="384"></canvas>
   </div>
 
   

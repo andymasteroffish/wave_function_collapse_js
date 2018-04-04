@@ -47,29 +47,9 @@ var playData = 1; //1: lode runner 1,           2: lode runner 2, 3: user create
                   //4: lode runner 1 demo mode, 5: lode runner 2 demo mode
 var curTime = MAX_TIME_COUNT;
 
-//andy
-function getWFCMap(){
-	console.log("love me");
-	return "                  S         " +
-"    $$            S         " +
-"#######H#######   S         " +
-"       H----------S    $    " +
-"       H    ##H   #######H##" +
-"       H    ##H          H  " +
-"     0 H    ##H       $0 H  " +
-"##H#####    ########H#######" +
-"  H                 H       " +
-"  H           0     H       " +
-"#########H##########H       " +
-"         H          H       " +
-"       $ H----------H   $   " +
-"    H######         #######H" +
-"    H         &  $         H" +
-"############################";
 
-}
 
-function init() 
+function LoderRunnerInit() 
 {
 	var screenSize = getScreenSize();
 	screenX1 = screenSize.x;
@@ -103,24 +83,40 @@ function loadDataJS()
 
 function canvasReSize() 
 {
+
 	for (var scale = MAX_SCALE; scale >= MIN_SCALE; scale -= 0.25) {
 		canvasX = BASE_SCREEN_X * scale;
 		canvasY = BASE_SCREEN_Y * scale;
 		if (canvasX <= screenX1 && canvasY <= screenY1 || scale <= MIN_SCALE) break;
 	}
-	//debug("screenX1 = " + screenX1 + " screenY1 = " + screenY1 + "scale = " + scale);
+	console.log("screenX1 = " + screenX1 + " screenY1 = " + screenY1 + "scale = " + scale);
 
 	canvas = document.getElementById('canvas');
 
+	//otherCanvas = canvas = document.getElementById('source_canvas');
+	//console.log("width "+otherCanvas.width+"   Y "+otherCanvas.style.top);
+
+	//andy
+	scale = 0.5;
+	canvasX = BASE_SCREEN_X * scale;
+	canvasY = BASE_SCREEN_Y * scale;
+
+	/*
+
+	
+	
 	canvas.width = canvasX;
 	canvas.height = canvasY;
 	
 	//Set canvas top left position
-	var left = ((screenX1 - canvasX)/2|0),
-		top  = ((screenY1 - canvasY)/2|0);
+	//var left = ((screenX1 - canvasX)/2|0),
+	//	top  = ((screenY1 - canvasY)/2|0);
+	var left = screenX1 - canvasX -30,
+		top  = screenY1 - canvasY - 30;
 	canvas.style.left = (left>0?left:0) + "px";
 	canvas.style.top =  (top>0?top:0) + "px";
 	canvas.style.position = "absolute";
+	*/
 	
 	//initial constant value
 	tileScale = scale;
@@ -160,7 +156,7 @@ function setBackground()
 	var background = new createjs.Shape();
 	background.graphics.beginFill("#000000").drawRect(0, 0, canvas.width, canvas.height);
 	mainStage.addChild(background);
-	document.body.style.background = "#301050";
+	//document.body.style.background = "#301050";
 }
 
 function showCoverPage()
@@ -339,7 +335,7 @@ function startGame()
 		levelMap = levelData[curLevel-1];	
 		break;
 	case PLAY_WFC:
-		levelMap = getWFCMap();	
+		levelMap = wfc.getMap();	
 		break;
 	}
 	showLevel(levelMap);

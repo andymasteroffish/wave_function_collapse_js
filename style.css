@@ -21,3 +21,9 @@ p {
 .pen_button_on{
 	background-color: #666666;
 }
+
+#canvas{
+	position: absolute;
+	left: 460px;
+	top: 30px;
+}

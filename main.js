@@ -2,7 +2,7 @@ var wfc;
 
 var frameInterval;
 
-function init(){
+function init_andy(){
 	wfc = new WFC();
 
 	document.addEventListener("keydown", keyDownRegister, false);
@@ -18,6 +18,7 @@ function init(){
 		wfc.resetOutputAndAdvance();
 	}
 
+	//LoderRunnerInit();
 }
 
 
@@ -60,6 +61,7 @@ function tick() {
 }
 
 function clickedPenButton(newVal){
+	console.log("pen: "+newVal);
 	wfc.setPen(newVal);
 }
 
